@@ -1,13 +1,8 @@
-import dotenv from 'dotenv';
-dotenv.config();
-import './db';
-import express from 'express';
+import app from './app';
+import db from './core/shared/infrastructure/db';
 
-const app = express();
-app.use('/', (req, res) => {
-  res.send('Hello World');
-});
+app.listen(app.get('port'), () =>
+  console.log(`Server running on port ${app.get('port')} 🔥`)
+);
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => console.log(`Server running on port ${port} 🔥`));
+new db().test();
