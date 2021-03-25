@@ -16,9 +16,9 @@ class CreateProduct {
     try {
       const { name, description, price } = req.body;
       const product = new Product(id, name, description, price);
-      const result = await this.repository.createProduct(product);
+      const productInformation = await this.repository.createProduct(product);
 
-      res.status(201).json({ error: false, payload: result });
+      res.status(201).json({ error: false, payload: productInformation });
     } catch (error) {
       next(error);
     }

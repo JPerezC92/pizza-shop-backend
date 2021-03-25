@@ -16,9 +16,9 @@ class SearchById {
   ): Promise<void> => {
     try {
       const { id } = req.params;
-      const result = await this._repository.searchById(id);
+      const productInformation = await this._repository.searchById(id);
 
-      res.status(200).json({ error: false, payload: result });
+      res.status(200).json({ error: false, payload: productInformation });
     } catch (error) {
       next(error);
     }

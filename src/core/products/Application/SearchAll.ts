@@ -10,9 +10,9 @@ class SearchAll {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const result = await this.repository.getAllProducts();
+      const productInformationList = await this.repository.getAllProducts();
 
-      res.status(200).json({ error: false, payload: result });
+      res.status(200).json({ error: false, payload: productInformationList });
     } catch (error) {
       next(error);
     }

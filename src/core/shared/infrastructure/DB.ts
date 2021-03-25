@@ -1,6 +1,6 @@
 import { Pool, PoolConfig } from 'pg';
 
-class db {
+class Db {
   config: PoolConfig = {
     user: <string>process.env.PGUSER,
     database: <string>process.env.PGDATABASE,
@@ -23,4 +23,4 @@ class db {
   };
 }
 
-export default db;
+export default Db;

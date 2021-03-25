@@ -1,4 +1,4 @@
-import db from '../../shared/infrastructure/db';
+import DB from '../../shared/infrastructure/DB';
 import {
   BEGIN,
   COMMIT,
@@ -7,18 +7,18 @@ import {
 import Product from '../Domain/Product';
 import IProductRepository from '../Domain/IProductRepository';
 import IProduct from '../Domain/Interfaces/IProduct';
+import ProductQueries from './ProductQueries';
 
 class ProductRepository implements IProductRepository {
-  pool = new db().pool;
+  productQueries = new ProductQueries();
+  pool = new DB().pool;
 
   getAllProducts = async (): Promise<IProduct[]> => {
     const client = await this.pool.connect();
 
     try {
       await client.query(BEGIN);
-      const data = await client.query({
-        text: 'SELECT * FROM products',
-      });
+      const data = await this.productQueries.getAllProducts(client);
       await client.query(COMMIT);
 
       return data.rows;
@@ -35,11 +35,8 @@ class ProductRepository implements IProductRepository {
 
     try {
       await client.query(BEGIN);
-      const data = await client.query({
-        text:
-          'INSERT INTO products (id, name, description, price) VALUES($1, $2, $3, $4) RETURNING *',
-        values: product.toArray(),
-      });
+      const data = await this.productQueries.createProduct(client, product);
+
       await client.query(COMMIT);
 
       return data.rows[0];
@@ -57,10 +54,7 @@ class ProductRepository implements IProductRepository {
     try {
       await client.query(BEGIN);
 
-      const data = await client.query({
-        text: 'SELECT * FROM products WHERE id=$1',
-        values: [id],
-      });
+      const data = await this.productQueries.searchById(client, id);
       await client.query(COMMIT);
 
       return data.rows[0];
