@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  api:
+    container_name: pizza-shop
+    restart: always
+    build: .
+    ports:
+      - "5000:3000"
+    volumes:
+      - .:/usr/src/app
+    links:
+      - database
+
+  database:
+    container_name: postgres
+    image: "postgres:13.2"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: pizza-shop
+    ports:
+      - "5432:5432"
